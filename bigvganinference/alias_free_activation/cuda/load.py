@@ -8,7 +8,8 @@ import subprocess
 from torch.utils import cpp_extension
 
 """
-Setting this param to a list has a problem of generating different compilation commands (with diferent order of architectures) and leading to recompilation of fused kernels. 
+Setting this param to a list has a problem of generating different compilation commands
+(with diferent order of architectures) and leading to recompilation of fused kernels. 
 Set it to empty stringo avoid recompilation and assign arch flags explicity in extra_cuda_cflags below
 """
 os.environ["TORCH_CUDA_ARCH_LIST"] = ""
@@ -58,17 +59,13 @@ def load():
         srcpath / "anti_alias_activation.cpp",
         srcpath / "anti_alias_activation_cuda.cu",
     ]
-    anti_alias_activation_cuda = _cpp_extention_load_helper(
-        "anti_alias_activation_cuda", sources, extra_cuda_flags
-    )
+    anti_alias_activation_cuda = _cpp_extention_load_helper("anti_alias_activation_cuda", sources, extra_cuda_flags)
 
     return anti_alias_activation_cuda
 
 
 def _get_cuda_bare_metal_version(cuda_dir):
-    raw_output = subprocess.check_output(
-        [cuda_dir + "/bin/nvcc", "-V"], universal_newlines=True
-    )
+    raw_output = subprocess.check_output([cuda_dir + "/bin/nvcc", "-V"], universal_newlines=True)
     output = raw_output.split()
     release_idx = output.index("release") + 1
     release = output[release_idx].split(".")

@@ -5,11 +5,11 @@
 #   LICENSE is in incl_licenses directory.
 
 import os
+
+from librosa.filters import mel as librosa_mel_fn
+import numpy as np
 import torch
 import torch.utils.data
-import numpy as np
-from librosa.filters import mel as librosa_mel_fn
-from tqdm import tqdm
 
 MAX_WAV_VALUE = 32767.0  # NOTE: 32768.0 -1 to prevent int16 overflow (results in popping sound in corner cases)
 
@@ -80,9 +80,7 @@ def mel_spectrogram(
     key = f"{n_fft}_{num_mels}_{sampling_rate}_{hop_size}_{win_size}_{fmin}_{fmax}_{device}"
 
     if key not in mel_basis_cache:
-        mel = librosa_mel_fn(
-            sr=sampling_rate, n_fft=n_fft, n_mels=num_mels, fmin=fmin, fmax=fmax
-        )
+        mel = librosa_mel_fn(sr=sampling_rate, n_fft=n_fft, n_mels=num_mels, fmin=fmin, fmax=fmax)
         mel_basis_cache[key] = torch.from_numpy(mel).float().to(device)
         hann_window_cache[key] = torch.hann_window(win_size).to(device)
 
@@ -90,9 +88,7 @@ def mel_spectrogram(
     hann_window = hann_window_cache[key]
 
     padding = (n_fft - hop_size) // 2
-    y = torch.nn.functional.pad(
-        y.unsqueeze(1), (padding, padding), mode="reflect"
-    ).squeeze(1)
+    y = torch.nn.functional.pad(y.unsqueeze(1), (padding, padding), mode="reflect").squeeze(1)
 
     spec = torch.stft(
         y,
@@ -143,31 +139,17 @@ def get_dataset_filelist(a):
     list_unseen_validation_files = []
 
     with open(a.input_training_file, "r", encoding="utf-8") as fi:
-        training_files = [
-            os.path.join(a.input_wavs_dir, x.split("|")[0] + ".wav")
-            for x in fi.read().split("\n")
-            if len(x) > 0
-        ]
+        training_files = [os.path.join(a.input_wavs_dir, x.split("|")[0] + ".wav") for x in fi.read().split("\n") if len(x) > 0]
         print(f"first training file: {training_files[0]}")
 
     with open(a.input_validation_file, "r", encoding="utf-8") as fi:
-        validation_files = [
-            os.path.join(a.input_wavs_dir, x.split("|")[0] + ".wav")
-            for x in fi.read().split("\n")
-            if len(x) > 0
-        ]
+        validation_files = [os.path.join(a.input_wavs_dir, x.split("|")[0] + ".wav") for x in fi.read().split("\n") if len(x) > 0]
         print(f"first validation file: {validation_files[0]}")
 
     for i in range(len(a.list_input_unseen_validation_file)):
         with open(a.list_input_unseen_validation_file[i], "r", encoding="utf-8") as fi:
-            unseen_validation_files = [
-                os.path.join(a.list_input_unseen_wavs_dir[i], x.split("|")[0] + ".wav")
-                for x in fi.read().split("\n")
-                if len(x) > 0
-            ]
-            print(
-                f"first unseen {i}th validation fileset: {unseen_validation_files[0]}"
-            )
+            unseen_validation_files = [os.path.join(a.list_input_unseen_wavs_dir[i], x.split("|")[0] + ".wav") for x in fi.read().split("\n") if len(x) > 0]
+            print(f"first unseen {i}th validation fileset: {unseen_validation_files[0]}")
             list_unseen_validation_files.append(unseen_validation_files)
 
     return training_files, validation_files, list_unseen_validation_files
