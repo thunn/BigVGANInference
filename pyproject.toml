@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "bigvganinference"
+version = "0.1.0"
+description = "An unofficial minimal package for using BigVGAN at inference time"
+authors = ["Tom Hunn <thunn_on_github>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "bigvganinference" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+torch = ">=2.3.1"
+librosa = ">=0.8.1"
+scipy = "^1.14.1"
+huggingface-hub = "^0.26.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 160
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
