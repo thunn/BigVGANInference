@@ -1,6 +1,9 @@
 # BigVGANInference
 An unofficial minimal package for using BigVGAN at inference time
 
+[![PyPI version](https://img.shields.io/pypi/v/bigvganinference)](https://pypi.org/project/bigvganinference/)
+![License](https://img.shields.io/pypi/l/bigvganinference)
+![Python versions](https://img.shields.io/pypi/pyversions/bigvganinference)
 
 ## Installation
 
@@ -25,12 +28,14 @@ from bigvganinference.inference import BigVGANInference, BigVGANHFModel
 model = BigVGANInference.from_pretrained(
     BigVGANHFModel.V2_44KHZ_128BAND_512X, use_cuda_kernel=False
 )
+
+output_audio = model(input_mel)
 ```
 
-See the [example](example/inference.py) for full usage example.
+See the [example](https://github.com/thunn/BigVGANInference/blob/main/example/inference.py) for full usage example.
 
 ## Acknowledgements
 This is an unofficial implementation based on [original BigVGAN repository](https://github.com/NVIDIA/BigVGAN).
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/thunn/BigVGANInference/blob/main/LICENSE) file for details.
