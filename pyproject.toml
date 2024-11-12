@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bigvganinference"
-version = "0.0.1"
+version = "0.0.2"
 description = "An unofficial minimal package for using BigVGAN at inference time"
 authors = []
 license = "MIT"
