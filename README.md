@@ -25,9 +25,11 @@ Loading model is as simple as:
 ```python
 from bigvganinference import BigVGANInference, BigVGANHFModel
 
+# model is loaded, set to eval and weight norm is removed
 model = BigVGANInference.from_pretrained(
     BigVGANHFModel.V2_44KHZ_128BAND_512X, use_cuda_kernel=False
 )
+
 
 output_audio = model(input_mel)
 ```
