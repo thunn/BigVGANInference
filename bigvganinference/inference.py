@@ -1,10 +1,10 @@
+from enum import Enum
+
 import numpy as np
 import torch
-from bigvganinference.env import AttrDict
-from enum import Enum
-from bigvganinference.bigvgan import BigVGAN
 
-from typing import Dict, Optional, Union
+from bigvganinference.bigvgan import BigVGAN
+from bigvganinference.env import AttrDict
 from bigvganinference.meldataset import get_mel_spectrogram
 
 
