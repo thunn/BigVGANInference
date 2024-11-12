@@ -7,13 +7,13 @@ An unofficial minimal package for using BigVGAN at inference time
 
 ## Installation
 
-```python
+```bash
 pip install bigvganinference
 ```
 
 or install from source:
 
-```python
+```bash
 git clone https://github.com/thunn/BigVGANInference.git
 cd BigVGANInference
 poetry install
