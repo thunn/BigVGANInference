@@ -1,4 +1,4 @@
-# BigVGANInference
+# BigVGAN Inference
 An unofficial minimal package for using BigVGAN at inference time
 
 [![PyPI version](https://img.shields.io/pypi/v/bigvganinference)](https://pypi.org/project/bigvganinference/)
