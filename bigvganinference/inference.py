@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Dict, Optional, Union
 
 import numpy as np
 import torch
@@ -37,7 +38,6 @@ class BigVGANInference(BigVGAN):
 
         # set to eval and remove weight norm
         self.eval()
-        self.remove_weight_norm()
 
     def get_mel_spectrogram(self, wav: torch.Tensor | np.ndarray) -> torch.Tensor:
         """
@@ -69,3 +69,53 @@ class BigVGANInference(BigVGAN):
         mel = mel.to(device)
 
         return mel
+
+    def forward(self, mel: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass with inference mode enabled.
+
+        Args:
+            mel (torch.Tensor): Input mel spectrogram
+
+        Returns:
+            torch.Tensor: Generated audio waveform
+        """
+        with torch.inference_mode():
+            return super().forward(mel)
+
+    @classmethod
+    def _from_pretrained(
+        cls,
+        *,
+        model_id: str,
+        revision: str,
+        cache_dir: str,
+        force_download: bool,
+        proxies: Optional[Dict],
+        resume_download: bool,
+        local_files_only: bool,
+        token: Union[str, bool, None],
+        map_location: str = "cpu",  # Additional argument
+        strict: bool = False,  # Additional argument
+        use_cuda_kernel: bool = False,
+        **model_kwargs,
+    ):
+        model = super()._from_pretrained(
+            model_id=model_id,
+            revision=revision,
+            cache_dir=cache_dir,
+            force_download=force_download,
+            proxies=proxies,
+            resume_download=resume_download,
+            local_files_only=local_files_only,
+            token=token,
+            map_location=map_location,
+            strict=strict,
+            use_cuda_kernel=use_cuda_kernel,
+            **model_kwargs,
+        )
+
+        # remove weight norm for inference
+        model.remove_weight_norm()
+
+        return model

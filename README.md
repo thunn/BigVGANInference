@@ -23,14 +23,30 @@ poetry install
 
 Loading model is as simple as:
 ```python
-from bigvganinference import BigVGANInference, BigVGANHFModel
+from bigvganinference import BigVGANInference
+
+# -- model loading ---
 
 # model is loaded, set to eval and weight norm is removed
 model = BigVGANInference.from_pretrained(
-    BigVGANHFModel.V2_44KHZ_128BAND_512X, use_cuda_kernel=False
+    'nvidia/BigVGAN-V2-44KHZ-128BAND-512X', use_cuda_kernel=False
 )
 
+# also supports loading from local directory
+model = BigVGANInference.from_pretrained(
+    "path/to/local/model", use_cuda_kernel=False
+)
 
+# --- usage example ---
+
+path_to_audio = "path/to/audio.wav"
+wav, sr = librosa.load(path_to_audio, sr=model.h.sampling_rate, mono=True)
+
+# get mel spectrogram using bigvgan's implementation
+mel = model.get_mel_spectrogram(wav)
+
+# generate waveform from mel
+# note: torch.inference_mode() is used internally
 output_audio = model(input_mel)
 ```
 
