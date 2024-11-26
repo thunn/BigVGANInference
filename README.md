@@ -43,11 +43,16 @@ path_to_audio = "path/to/audio.wav"
 wav, sr = librosa.load(path_to_audio, sr=model.h.sampling_rate, mono=True)
 
 # get mel spectrogram using bigvgan's implementation
+# mel: [B(1), MEL_BANDS, T_time]
 mel = model.get_mel_spectrogram(wav)
 
 # generate waveform from mel
 # note: torch.inference_mode() is used internally
+# output_audio: [B(1), 1, T_time]
 output_audio = model(input_mel)
+
+# get numpy array
+output_audio_np = output_audio.squeeze(0).cpu().numpy()
 ```
 
 See the [example](https://github.com/thunn/BigVGANInference/blob/main/example/inference.py) for full usage example.
